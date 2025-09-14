@@ -113,9 +113,7 @@
         
         <div class="testimonials-grid">
           <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
-            <QuoteIcon class="quote-icon" />
-            <p class="testimonial-text">"他们的技术团队专业且响应迅速，帮助我们解决了复杂的系统集成问题，大大提升了业务效率。"</p>
-            <div class="client-info">
+            <div class="testimonial-header">
               <div class="client-avatar">
                 <div class="avatar-placeholder">张</div>
               </div>
@@ -124,12 +122,12 @@
                 <div class="client-title">技术总监，某大型互联网公司</div>
               </div>
             </div>
+            <p class="testimonial-text">"他们的技术团队专业且响应迅速，帮助我们解决了复杂的系统集成问题，大大提升了业务效率。"</p>
+            <QuoteIcon class="quote-icon" />
           </div>
           
           <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
-            <QuoteIcon class="quote-icon" />
-            <p class="testimonial-text">"合作三年来，他们始终能按时交付高质量的解决方案，是我们值得信赖的技术合作伙伴。"</p>
-            <div class="client-info">
+            <div class="testimonial-header">
               <div class="client-avatar">
                 <div class="avatar-placeholder">李</div>
               </div>
@@ -138,12 +136,12 @@
                 <div class="client-title">CTO，某金融科技公司</div>
               </div>
             </div>
+            <p class="testimonial-text">"合作三年来，他们始终能按时交付高质量的解决方案，是我们值得信赖的技术合作伙伴。"</p>
+            <QuoteIcon class="quote-icon" />
           </div>
           
           <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
-            <QuoteIcon class="quote-icon" />
-            <p class="testimonial-text">"从需求分析到项目交付，整个过程非常顺畅。他们的专业建议帮助我们优化了产品设计。"</p>
-            <div class="client-info">
+            <div class="testimonial-header">
               <div class="client-avatar">
                 <div class="avatar-placeholder">王</div>
               </div>
@@ -152,6 +150,8 @@
                 <div class="client-title">产品副总裁，某创业公司</div>
               </div>
             </div>
+            <p class="testimonial-text">"从需求分析到项目交付，整个过程非常顺畅。他们的专业建议帮助我们优化了产品设计。"</p>
+            <QuoteIcon class="quote-icon" />
           </div>
         </div>
       </div>
@@ -647,90 +647,67 @@ export default {
 }
 
 .testimonials {
-  background-color: #f8f9fa;
+  background-color: #fff;
 }
 
 .dark-mode .testimonials {
-  background-color: #252525;
+  background-color: #1a1a1a;
 }
 
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  gap: 24px;
 }
 
 .testimonial-card {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  padding: 30px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  transition: all 0.4s ease;
-  border: 1px solid #eee;
+  background: #ffffff;
+  padding: 24px;
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
   position: relative;
+  border-radius: 8px;
 }
 
 .testimonial-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e0;
 }
 
 .dark-mode .testimonial-card {
   background: #2d2d2d;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   border: 1px solid #3d3d3d;
 }
 
 .dark-mode .testimonial-card:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  border-color: #4a4a4a;
 }
 
-.quote-icon {
-  font-size: 4rem;
-  color: rgba(66, 185, 131, 0.2);
-  position: absolute;
-  top: -20px;
-  left: 20px;
-  font-family: Georgia, serif;
-}
-
-.testimonial-text {
-  color: #333;
-  line-height: 1.8;
-  margin-bottom: 20px;
-  font-style: italic;
-  padding-top: 30px;
-}
-
-.dark-mode .testimonial-text {
-  color: #e0e0e0;
-}
-
-.client-info {
+.testimonial-header {
   display: flex;
   align-items: center;
+  margin-bottom: 16px;
 }
 
 .client-avatar {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   overflow: hidden;
-  margin-right: 15px;
   flex-shrink: 0;
   background: linear-gradient(135deg, #42b983, #64b5f6);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  margin-right: 12px;
 }
 
 .avatar-placeholder {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.2rem;
+  font-weight: 600;
   color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .client-details {
@@ -740,7 +717,8 @@ export default {
 .client-name {
   font-weight: 600;
   color: #333;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
+  font-size: 1rem;
 }
 
 .dark-mode .client-name {
@@ -748,12 +726,44 @@ export default {
 }
 
 .client-title {
-  color: #666;
-  font-size: 0.9rem;
+  color: #64748b;
+  font-size: 0.85rem;
 }
 
 .dark-mode .client-title {
-  color: #aaa;
+  color: #94a3b8;
+}
+
+.testimonial-text {
+  color: #334155;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-style: normal;
+  padding-top: 0;
+  position: relative;
+}
+
+.testimonial-text::before {
+  content: '"';
+  position: absolute;
+  top: -20px;
+  left: -10px;
+  font-size: 4rem;
+  color: rgba(66, 185, 131, 0.15);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.dark-mode .testimonial-text {
+  color: #cbd5e1;
+}
+
+.quote-icon {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  color: rgba(66, 185, 131, 0.3);
+  font-size: 1.5rem;
 }
 
 @media (max-width: 768px) {
