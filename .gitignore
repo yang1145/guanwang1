@@ -2,6 +2,32 @@
 logs
 *.log
 
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 编辑器目录
+.vscode/
+.idea/
+
+# 环境变量文件
+.env*
+!.env.example
+
+# 构建输出
+dist/
+build/
+
+# 数据库相关
+*.sqlite
+*.sqlite3
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
 # Runtime data
 pids
 *.pid

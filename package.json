@@ -6,22 +6,30 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "start": "node backend/app.js",
+    "dev:server": "nodemon backend/app.js",
+    "init:db": "node backend/config/initDb.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.21.2",
     "lucide-vue-next": "^0.544.0",
+    "mysql2": "^3.6.0",
     "vue": "^3.2.0",
     "vue-router": "^4.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.0",
+    "nodemon": "^3.0.1",
     "vite": "^3.0.0"
   },
   "keywords": [
     "vue3",
-    "website",
-    "tech",
-    "company"
+    "express",
+    "mysql",
+    "website"
   ],
   "author": "Tech Company",
   "license": "MIT"

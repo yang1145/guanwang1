@@ -8,7 +8,15 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 3000,
     // 禁用HTTP/2以解决ERR_HTTP2_PROTOCOL_ERROR错误
-    https: false
+    https: false,
+    // 添加代理配置，将API请求代理到后端服务器
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   },
   build: {
     outDir: 'dist'
