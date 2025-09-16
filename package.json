@@ -1,36 +1,30 @@
 {
-  "name": "tech-company-website",
+  "name": "guanwang1",
   "version": "1.0.0",
-  "description": "科技企业官网，使用Vue 3开发，扁平化风格设计",
-  "main": "src/main.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview",
+    "preview": "vite preview",
     "start": "node backend/app.js",
     "dev:server": "nodemon backend/app.js",
-    "init:db": "node backend/config/initDb.js"
+    "init:db": "node backend/config/initDb.js",
+    "drop:db": "node backend/config/dropDb.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.21.2",
+    "express": "^4.18.2",
     "lucide-vue-next": "^0.544.0",
-    "mysql2": "^3.6.0",
-    "vue": "^3.2.0",
-    "vue-router": "^4.0.0"
+    "mysql2": "^3.2.0",
+    "vue": "^3.2.47",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.0",
-    "nodemon": "^3.0.1",
+    "nodemon": "^2.0.22",
     "vite": "^3.0.0"
-  },
-  "keywords": [
-    "vue3",
-    "express",
-    "mysql",
-    "website"
-  ],
-  "author": "Tech Company",
-  "license": "MIT"
+  }
 }

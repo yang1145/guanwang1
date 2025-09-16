@@ -60,13 +60,68 @@ export default {
       headerImage: bg2,
       activeCategory: 'all',
       categories: [
-        { id: 'all', name: '全部产品' },
-        { id: 'ai', name: '人工智能' },
-        { id: 'cloud', name: '云计算' },
-        { id: 'iot', name: '物联网' },
-        { id: 'security', name: '安全' }
+        { id: 'all', name: '全部产品' }
       ],
-      products: [
+      products: []
+    }
+  },
+  computed: {
+    filteredProducts() {
+      if (this.activeCategory === 'all') {
+        return this.products
+      }
+      return this.products.filter(product => product.category === this.activeCategory)
+    }
+  },
+  async mounted() {
+    await this.fetchProducts()
+    this.animateOnScroll();
+  },
+  methods: {
+    async fetchProducts() {
+      try {
+        const response = await fetch('/api/products')
+        const result = await response.json()
+        if (response.ok) {
+          this.products = result.data
+          
+          // 根据获取的产品数据动态生成分类
+          const uniqueCategories = [...new Set(result.data.map(product => product.category))]
+          this.categories = [{ id: 'all', name: '全部产品' }]
+          
+          // 为每个分类添加中文名称映射
+          uniqueCategories.forEach(category => {
+            let categoryName = category
+            switch(category) {
+              case 'ai':
+                categoryName = '人工智能'
+                break
+              case 'cloud':
+                categoryName = '云计算'
+                break
+              case 'iot':
+                categoryName = '物联网'
+                break
+              case 'security':
+                categoryName = '安全'
+                break
+              default:
+                categoryName = category
+            }
+            this.categories.push({ id: category, name: categoryName })
+          })
+        } else {
+          console.error('获取产品失败:', result.error)
+          this.useMockData()
+        }
+      } catch (error) {
+        console.error('获取产品时出错:', error)
+        this.useMockData()
+      }
+    },
+    
+    useMockData() {
+      this.products = [
         {
           id: 1,
           name: '智能分析平台',
@@ -116,20 +171,16 @@ export default {
           category: 'security'
         }
       ]
-    }
-  },
-  computed: {
-    filteredProducts() {
-      if (this.activeCategory === 'all') {
-        return this.products
-      }
-      return this.products.filter(product => product.category === this.activeCategory)
-    }
-  },
-  mounted() {
-    this.animateOnScroll();
-  },
-  methods: {
+      
+      this.categories = [
+        { id: 'all', name: '全部产品' },
+        { id: 'ai', name: '人工智能' },
+        { id: 'cloud', name: '云计算' },
+        { id: 'iot', name: '物联网' },
+        { id: 'security', name: '安全' }
+      ]
+    },
+    
     setActiveCategory(categoryId) {
       this.activeCategory = categoryId
     },
@@ -201,38 +252,32 @@ export default {
 }
 
 .category-btn {
-  padding: 10px 25px;
-  border: none;
+  padding: 10px 20px;
+  background: #f8f9fa;
+  border: 1px solid #eee;
   border-radius: 30px;
-  background-color: #f8f9fa;
-  color: #333;
-  font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 1rem;
+  color: #333;
+}
+
+.dark-mode .category-btn {
+  background: #2d2d2d;
+  border: 1px solid #3d3d3d;
+  color: #e0e0e0;
 }
 
 .category-btn:hover,
 .category-btn.active {
-  background-color: #42b983;
+  background: #42b983;
   color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* 暗色模式下的分类按钮样式 */
-.dark-mode .category-btn {
-  background-color: #2d2d2d;
-  color: #e0e0e0;
-}
-
-.dark-mode .category-btn:hover,
-.dark-mode .category-btn.active {
-  background-color: #42b983;
+  border-color: #42b983;
 }
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 30px;
 }
 
@@ -240,53 +285,73 @@ export default {
   background: white;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #eee;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.dark-mode .product-card {
+  background: #2d2d2d;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid #3d3d3d;
+}
+
+.product-card.aos-animate {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .product-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* 暗色模式下的产品卡片样式 */
-.dark-mode .product-card {
-  background: #2d2d2d;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+.dark-mode .product-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .product-image {
   height: 200px;
-  overflow: hidden;
-}
-
-.placeholder-image {
-  background-color: #e9ecef;
-  height: 100%;
+  background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
-  color: #6c757d;
+  color: #999;
 }
 
-/* 暗色模式下的占位符图片样式 */
-.dark-mode .placeholder-image {
-  background-color: #3d3d3d;
+.dark-mode .product-image {
+  background: linear-gradient(45deg, #3d3d3d, #2d2d2d);
   color: #aaa;
 }
 
+.placeholder-image {
+  font-size: 1.2rem;
+}
+
 .product-info {
-  padding: 25px;
+  padding: 20px;
 }
 
 .product-title {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
+  font-size: 1.3rem;
+  margin: 0 0 10px 0;
   color: #333;
+  position: relative;
+  padding-bottom: 10px;
 }
 
-/* 暗色模式下的产品标题样式 */
+.product-title:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  height: 3px;
+  background-color: #42b983;
+}
+
 .dark-mode .product-title {
   color: #e0e0e0;
 }
@@ -297,97 +362,67 @@ export default {
   margin-bottom: 20px;
 }
 
-/* 暗色模式下的产品描述样式 */
 .dark-mode .product-description {
   color: #aaa;
-}
-
-.product-actions {
-  margin-top: 15px;
 }
 
 .btn {
   display: inline-block;
   padding: 10px 20px;
-  border-radius: 30px;
+  border-radius: 4px;
   text-decoration: none;
   font-weight: 500;
+  cursor: pointer;
   transition: all 0.3s ease;
   border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
 }
 
 .btn-primary {
-  background-color: #42b983;
+  background: #42b983;
   color: white;
+  border: 1px solid #42b983;
 }
 
 .btn-primary:hover {
-  background-color: #359c6d;
+  background: #359c6d;
+  border-color: #359c6d;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* 暗色模式下的按钮样式 */
-.dark-mode .btn-primary {
-  background-color: #64b5f6;
-  color: #1a1a1a;
-}
-
-.dark-mode .btn-primary:hover {
-  background-color: #90caf9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .no-products {
   text-align: center;
-  padding: 40px;
+  padding: 50px 0;
   color: #666;
   font-size: 1.2rem;
+  grid-column: 1 / -1;
 }
 
-/* 暗色模式下的无产品提示样式 */
 .dark-mode .no-products {
   color: #aaa;
 }
 
 @media (max-width: 768px) {
-  .page-header {
-    padding: 40px 0;
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
   }
-
+  
   .page-header h1 {
     font-size: 2rem;
   }
-
+  
   .page-header p {
     font-size: 1rem;
   }
-
-  .product-categories {
-    padding: 60px 0;
-  }
-
-  .products-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-  }
-
+  
   .category-filter {
     gap: 10px;
   }
-
+  
   .category-btn {
     padding: 8px 16px;
     font-size: 0.9rem;
-  }
-  
-  .product-info {
-    padding: 20px;
-  }
-  
-  .product-title {
-    font-size: 1.3rem;
   }
 }
 </style>

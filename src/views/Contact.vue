@@ -83,17 +83,6 @@
                 <span v-if="errors.phone" class="error-message">{{ errors.phone }}</span>
               </div>
               <div class="form-group">
-                <label for="subject">主题</label>
-                <input 
-                  type="text" 
-                  id="subject" 
-                  v-model="form.subject" 
-                  :class="{ 'error': errors.subject }"
-                  required
-                >
-                <span v-if="errors.subject" class="error-message">{{ errors.subject }}</span>
-              </div>
-              <div class="form-group">
                 <label for="message">消息内容</label>
                 <textarea 
                   id="message" 
@@ -104,7 +93,12 @@
                 ></textarea>
                 <span v-if="errors.message" class="error-message">{{ errors.message }}</span>
               </div>
-              <button type="submit" class="submit-btn">发送消息</button>
+              <button type="submit" class="submit-btn" :disabled="isSubmitting">
+                {{ isSubmitting ? '发送中...' : '发送消息' }}
+              </button>
+              <div v-if="submitStatus" :class="['submit-status', submitStatus.type]">
+                {{ submitStatus.message }}
+              </div>
             </form>
           </div>
         </div>
@@ -132,10 +126,11 @@ export default {
         name: '',
         email: '',
         phone: '',
-        subject: '',
         message: ''
       },
-      errors: {}
+      errors: {},
+      isSubmitting: false,
+      submitStatus: null
     }
   },
   mounted() {
@@ -178,10 +173,6 @@ export default {
         this.errors.email = '请输入有效的邮箱地址';
       }
       
-      if (!this.form.subject) {
-        this.errors.subject = '请输入消息主题';
-      }
-      
       if (!this.form.message) {
         this.errors.message = '请输入消息内容';
       }
@@ -193,19 +184,54 @@ export default {
       
       return Object.keys(this.errors).length === 0;
     },
-    submitForm() {
+    async submitForm() {
       if (this.validateForm()) {
-        console.log('Form submitted:', this.form);
-        // 这里可以添加表单提交逻辑
-        alert('消息已发送！我们会尽快与您联系。');
-        // 重置表单
-        this.form = {
-          name: '',
-          email: '',
-          phone: '',
-          subject: '',
-          message: ''
-        };
+        this.isSubmitting = true;
+        this.submitStatus = null;
+        
+        try {
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              name: this.form.name,
+              email: this.form.email,
+              phone: this.form.phone,
+              message: this.form.message
+            })
+          });
+          
+          const result = await response.json();
+          
+          if (response.ok) {
+            this.submitStatus = {
+              type: 'success',
+              message: '消息已发送！我们会尽快与您联系。'
+            };
+            // 重置表单
+            this.form = {
+              name: '',
+              email: '',
+              phone: '',
+              message: ''
+            };
+          } else {
+            this.submitStatus = {
+              type: 'error',
+              message: result.error || '发送失败，请稍后重试。'
+            };
+          }
+        } catch (error) {
+          console.error('提交表单时出错:', error);
+          this.submitStatus = {
+            type: 'error',
+            message: '网络错误，请稍后重试。'
+          };
+        } finally {
+          this.isSubmitting = false;
+        }
       }
     }
   }
@@ -271,15 +297,14 @@ export default {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 50px;
+  width: 40px;
   height: 3px;
   background-color: #42b983;
 }
 
-/* 暗色模式下的标题装饰线样式 */
 .dark-mode .contact-info h2::after,
 .dark-mode .contact-form h2::after {
-  background-color: #64b5f6;
+  background-color: #42b983;
 }
 
 .contact-details {
@@ -297,6 +322,7 @@ export default {
 .contact-icon {
   font-size: 1.5rem;
   min-width: 50px;
+  color: #42b983;
 }
 
 .contact-text h3 {
@@ -364,37 +390,22 @@ export default {
   width: 100%;
   padding: 12px 15px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 4px;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s;
   box-sizing: border-box;
-  background-color: #fff;
-  color: #333;
-}
-
-/* 暗色模式下的表单输入框样式 */
-.dark-mode .contact-form input,
-.dark-mode .contact-form textarea {
-  background-color: #2d2d2d;
-  border: 1px solid #444;
-  color: #e0e0e0;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
   border-color: #42b983;
-}
-
-/* 暗色模式下的表单输入框聚焦样式 */
-.dark-mode .contact-form input:focus,
-.dark-mode .contact-form textarea:focus {
-  border-color: #64b5f6;
+  box-shadow: 0 0 0 2px rgba(66, 185, 131, 0.25);
 }
 
 .contact-form input.error,
 .contact-form textarea.error {
-  border-color: #e74c3c;
+  border-color: #dc3545;
 }
 
 .contact-form textarea {
@@ -403,84 +414,63 @@ export default {
 }
 
 .error-message {
-  color: #e74c3c;
+  color: #dc3545;
   font-size: 0.875rem;
   margin-top: 5px;
   display: block;
 }
 
 .submit-btn {
-  background-color: #42b983;
+  background: #42b983;
   color: white;
   border: none;
-  padding: 15px 30px;
-  border-radius: 30px;
+  padding: 12px 30px;
   font-size: 1rem;
-  font-weight: 500;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
   width: 100%;
 }
 
-.submit-btn:hover {
-  background-color: #359c6d;
+.submit-btn:hover:not(:disabled) {
+  background: #359c6d;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 暗色模式下的提交按钮样式 */
-.dark-mode .submit-btn {
-  background-color: #64b5f6;
-  color: #1a1a1a;
+.submit-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
 }
 
-.dark-mode .submit-btn:hover {
-  background-color: #90caf9;
+.submit-status {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
 }
 
-@media (max-width: 992px) {
-  .contact-layout {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
+.submit-status.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
 
-  .contact-info {
-    order: 2;
-  }
-
-  .contact-form {
-    order: 1;
-  }
+.submit-status.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }
 
 @media (max-width: 768px) {
-  .page-header {
-    padding: 40px 0;
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
   }
-
-  .page-header h1 {
-    font-size: 2rem;
-  }
-
-  .page-header p {
-    font-size: 1rem;
-  }
-
-  .contact-content {
-    padding: 60px 0;
-  }
-
+  
   .contact-info h2,
   .contact-form h2 {
     font-size: 1.5rem;
-  }
-
-  .contact-item {
-    gap: 15px;
-  }
-
-  .map-container {
-    height: 250px;
   }
 }
 </style>
