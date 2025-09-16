@@ -233,8 +233,24 @@ export default {
     '$route.query.page': {
       handler(newPage) {
         const page = parseInt(newPage) || 1
-        if (page >= 1 && page <= this.totalPages) {
-          this.currentPage = page
+        // 在数据加载前也允许设置页面，但限制最小值为1
+        this.currentPage = Math.max(1, page)
+      },
+      immediate: true
+    },
+    // 监听文章数据变化，确保页面在有效范围内
+    allArticles: {
+      handler() {
+        // 确保当前页面不超过总页数
+        if (this.currentPage > this.totalPages && this.totalPages > 0) {
+          this.currentPage = this.totalPages
+        }
+        // 如果当前页面是1但是路由中有page参数，则根据路由更新
+        if (this.currentPage === 1 && this.$route.query.page) {
+          const page = parseInt(this.$route.query.page) || 1
+          if (page >= 1 && page <= this.totalPages) {
+            this.currentPage = page
+          }
         }
       },
       immediate: true
@@ -243,11 +259,6 @@ export default {
   mounted() {
     this.fetchArticles()
     this.fetchPopularArticles()
-    // 初始化时根据路由参数设置当前页
-    const page = parseInt(this.$route.query.page) || 1
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page
-    }
   },
   methods: {
     async fetchArticles() {
@@ -403,16 +414,25 @@ export default {
     },
     goToPage(page) {
       // 确保页码在有效范围内
-      if (page < 1 || page > this.totalPages) return
+      if (page < 1) page = 1
+      if (page > this.totalPages && this.totalPages > 0) page = this.totalPages
       
-      // 先更新路由参数
+      // 更新路由参数
       this.$router.push({
         query: { ...this.$route.query, page: page }
       }).then(() => {
-        // 路由更新完成后再设置当前页
+        // 更新当前页
         this.currentPage = page
         
-        // 滚动到页面顶部
+        // 在路由更新完成后滚动到页面顶部
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
+      }).catch(err => {
+        // 即使路由更新失败也尝试更新页面和滚动到顶部
+        console.error('路由更新错误:', err)
+        this.currentPage = page
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
