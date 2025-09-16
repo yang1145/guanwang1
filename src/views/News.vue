@@ -24,6 +24,8 @@
                     <div class="placeholder-image">{{ article.title }}</div>
                   </div>
                   <div class="news-info">
+                  <h2 class="news-title">{{ article.title }}</h2>
+                  <p class="news-excerpt">{{ getExcerpt(article.content, 100) }}</p>
                   <div class="news-meta">
                     <span class="news-date">
                       <CalendarIcon :size="16" />
@@ -34,8 +36,6 @@
                       {{ article.category }}
                     </span>
                   </div>
-                  <h2 class="news-title">{{ article.title }}</h2>
-                  <p class="news-excerpt">{{ getExcerpt(article.content, 100) }}</p>
                   <div class="news-actions">
                     <router-link :to="'/news/' + article.id" class="read-more">
                       阅读全文 
@@ -405,17 +405,18 @@ export default {
       // 确保页码在有效范围内
       if (page < 1 || page > this.totalPages) return
       
-      this.currentPage = page
-      
-      // 更新路由参数
+      // 先更新路由参数
       this.$router.push({
         query: { ...this.$route.query, page: page }
-      })
-      
-      // 滚动到页面顶部
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+      }).then(() => {
+        // 路由更新完成后再设置当前页
+        this.currentPage = page
+        
+        // 滚动到页面顶部
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
       })
     },
     filterByTag(tag) {
@@ -510,7 +511,7 @@ export default {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 使内容在容器内上下对齐 */
+  justify-content: space-between; /* 将内容均匀分布在容器中 */
 }
 
 .dark-mode .news-card {
@@ -532,26 +533,6 @@ export default {
 
 .dark-mode .news-card:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.news-image {
-  height: 200px;
-  background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #999;
-}
-
-.dark-mode .news-image {
-  background: linear-gradient(45deg, #3d3d3d, #2d2d2d);
-  color: #aaa;
-}
-
-.placeholder-image {
-  font-size: 1.2rem;
-  text-align: center;
-  padding: 20px;
 }
 
 .news-meta {
@@ -587,6 +568,7 @@ export default {
   position: relative;
   padding-bottom: 12px;
   line-height: 1.4;
+  flex-grow: 1; /* 允许标题区域扩展 */
 }
 
 .news-title:after {
@@ -609,6 +591,7 @@ export default {
   line-height: 1.6;
   margin-bottom: 20px;
   font-size: 0.95rem;
+  flex-grow: 1; /* 允许摘要区域扩展 */
 }
 
 .dark-mode .news-excerpt {
@@ -617,6 +600,7 @@ export default {
 
 .news-actions {
   text-align: right;
+  margin-top: auto; /* 将操作按钮推到底部 */
 }
 
 .read-more {
@@ -915,6 +899,7 @@ export default {
   
   .news-card-content {
     flex-direction: column;
+    align-items: stretch;
   }
   
   .news-image {
@@ -924,6 +909,9 @@ export default {
   
   .news-info {
     flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   
   .news-meta {

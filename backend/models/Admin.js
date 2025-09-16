@@ -1,5 +1,5 @@
-const bcrypt = require('bcryptjs');
 const db = require('../config/db');
+const bcrypt = require('bcryptjs');
 
 class Admin {
   // 根据用户名获取管理员信息
@@ -52,6 +52,43 @@ class Admin {
       [hashedPassword, username]
     );
     return result.affectedRows;
+  }
+
+  // 修改管理员密码
+  static async changePassword(id, currentPassword, newPassword) {
+    try {
+      // 获取管理员信息
+      const [rows] = await db.query(
+        'SELECT password FROM admins WHERE id = ?',
+        [id]
+      );
+      
+      if (rows.length === 0) {
+        throw new Error('管理员不存在');
+      }
+      
+      const admin = rows[0];
+      
+      // 验证当前密码
+      const isCurrentPasswordValid = await bcrypt.compare(currentPassword, admin.password);
+      if (!isCurrentPasswordValid) {
+        throw new Error('当前密码错误');
+      }
+      
+      // 生成新密码哈希
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+      
+      // 更新密码
+      const [result] = await db.query(
+        'UPDATE admins SET password = ? WHERE id = ?',
+        [hashedNewPassword, id]
+      );
+      
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error('修改密码时出错:', error);
+      throw error;
+    }
   }
 
   // 获取所有管理员（调试用）

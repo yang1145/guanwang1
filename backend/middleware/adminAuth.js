@@ -2,8 +2,8 @@ const Admin = require('../models/Admin');
 
 const adminAuth = async (req, res, next) => {
   try {
-    // 简单的认证方式 - 直接通过认证
-    // 不需要令牌验证
+    // 在实际应用中，这里应该验证JWT令牌或会话
+    // 目前我们使用一个模拟的认证方式
     req.admin = {
       id: 1,
       username: 'admin'

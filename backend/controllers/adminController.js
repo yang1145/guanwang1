@@ -72,7 +72,48 @@ const getAdminInfo = async (req, res) => {
   }
 };
 
+// 修改管理员密码
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword, confirmNewPassword } = req.body;
+    const adminId = req.admin.id; // 从认证中间件获取管理员ID
+
+    // 检查是否提供了所有必需的字段
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      return res.status(400).json({ error: '请提供当前密码、新密码和确认新密码' });
+    }
+
+    // 检查新密码和确认密码是否一致
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({ error: '新密码和确认密码不一致' });
+    }
+
+    // 检查新密码长度（至少6位）
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: '新密码长度至少为6位' });
+    }
+
+    // 调用模型方法修改密码
+    const result = await Admin.changePassword(adminId, currentPassword, newPassword);
+    
+    if (result) {
+      res.json({ message: '密码修改成功' });
+    } else {
+      res.status(500).json({ error: '密码修改失败' });
+    }
+  } catch (error) {
+    console.error('修改密码时出错:', error);
+    if (error.message === '当前密码错误') {
+      return res.status(400).json({ error: '当前密码错误' });
+    } else if (error.message === '管理员不存在') {
+      return res.status(404).json({ error: '管理员不存在' });
+    }
+    res.status(500).json({ error: '服务器内部错误' });
+  }
+};
+
 module.exports = {
   login,
-  getAdminInfo
+  getAdminInfo,
+  changePassword
 };
