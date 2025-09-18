@@ -78,6 +78,62 @@
 1. 部署时请务必修改默认管理员密码
 2. 使用HTTPS保护管理后台通信安全
 
+## Docker 部署（推荐）
+
+项目提供了 Docker 配置文件，可以快速部署整个应用，包括前端、后端和数据库。
+
+### 环境要求
+
+- Docker >= 18.0
+- Docker Compose >= 1.25
+
+### 部署步骤
+
+1. 构建并启动所有服务：
+   ```bash
+   docker-compose up --build
+   ```
+
+2. 初始化数据库（首次部署时）：
+   ```bash
+   docker-compose exec app npm run docker:init
+   ```
+
+3. 访问应用：
+   - 应用将在 `http://localhost:3001` 可用
+   - 管理后台登录页面：`http://localhost:3001/admin/login`
+
+### 停止服务
+
+```bash
+docker-compose down
+```
+
+### 后台运行
+
+如果希望服务在后台运行，可以使用以下命令：
+
+```bash
+docker-compose up --build -d
+```
+
+要查看后台运行的日志：
+
+```bash
+docker-compose logs -f
+```
+
+### 数据持久化
+
+Docker 配置使用了命名卷来持久化 MySQL 数据，即使容器被删除，数据也会保留。
+
+### 自定义配置
+
+可以通过修改 `docker-compose.yml` 文件来自定义配置，例如：
+- 修改端口映射
+- 更改数据库密码
+- 调整资源限制
+
 ## 部署教程
 
 ### 前端独立部署
