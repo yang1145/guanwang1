@@ -9,8 +9,8 @@ README.md
 Dockerfile
 .dockerignore
 docker-compose.yml
-package-lock.json
 vite.config.js
 index.html
 src
 *.md
+!package-lock.json
