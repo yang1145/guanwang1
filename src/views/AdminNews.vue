@@ -166,6 +166,7 @@ import {
   FileTextIcon,
   MailIcon
 } from 'lucide-vue-next'
+import API_BASE_URL from '@/api.js'
 
 export default {
   name: 'AdminNews',
@@ -214,7 +215,7 @@ export default {
     
     async fetchNews() {
       try {
-        const response = await fetch('/api/news', {
+        const response = await fetch(`${API_BASE_URL}/api/news`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
           }
@@ -256,8 +257,8 @@ export default {
     async saveNews() {
       try {
         const url = this.editingNews 
-          ? `/api/news/${this.editingNews.id}` 
-          : '/api/news'
+          ? `${API_BASE_URL}/api/news/${this.editingNews.id}` 
+          : `${API_BASE_URL}/api/news`
           
         const method = this.editingNews ? 'PUT' : 'POST'
         
@@ -299,7 +300,7 @@ export default {
       if (!this.newsToDelete) return
       
       try {
-        const response = await fetch(`/api/news/${this.newsToDelete.id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/news/${this.newsToDelete.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('adminToken')}`

@@ -110,6 +110,7 @@ import {
   PackageIcon,
   FileTextIcon
 } from 'lucide-vue-next'
+import API_BASE_URL from '@/api.js'
 
 export default {
   name: 'AdminMessages',
@@ -151,7 +152,7 @@ export default {
     async fetchMessages() {
       try {
         this.loading = true
-        const response = await fetch('/api/contact')
+        const response = await fetch(`${API_BASE_URL}/api/contact`)
         const result = await response.json()
         
         if (response.ok) {
@@ -173,7 +174,7 @@ export default {
       }
       
       try {
-        const response = await fetch(`/api/contact/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/contact/${id}`, {
           method: 'DELETE'
         })
         

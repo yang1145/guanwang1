@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import API_BASE_URL from '@/api.js';
+
 export default {
   name: 'AdminLogin',
   data() {
@@ -58,7 +60,7 @@ export default {
       this.error = ''
       
       try {
-        const response = await fetch('/api/admin/login', {
+        const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

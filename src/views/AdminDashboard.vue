@@ -148,6 +148,7 @@ import {
   UserIcon,
   LockIcon
 } from 'lucide-vue-next'
+import API_BASE_URL from '@/api.js'
 
 export default {
   name: 'AdminDashboard',
@@ -200,21 +201,21 @@ export default {
     async fetchStats() {
       try {
         // 获取产品数量
-        const productResponse = await fetch('/api/products')
+        const productResponse = await fetch(`${API_BASE_URL}/api/products`)
         const productResult = await productResponse.json()
         if (productResponse.ok) {
           this.stats.products = productResult.data.length
         }
         
         // 获取新闻数量
-        const newsResponse = await fetch('/api/news')
+        const newsResponse = await fetch(`${API_BASE_URL}/api/news`)
         const newsResult = await newsResponse.json()
         if (newsResponse.ok) {
           this.stats.news = newsResult.data.length
         }
         
         // 获取消息数量
-        const messageResponse = await fetch('/api/contact')
+        const messageResponse = await fetch(`${API_BASE_URL}/api/contact`)
         const messageResult = await messageResponse.json()
         if (messageResponse.ok) {
           this.stats.messages = messageResult.data.length
@@ -249,7 +250,7 @@ export default {
       }
       
       try {
-        const response = await fetch('/api/admin/change-password', {
+        const response = await fetch(`${API_BASE_URL}/api/admin/change-password`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'

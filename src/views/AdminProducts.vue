@@ -158,6 +158,7 @@ import {
   FileTextIcon,
   MailIcon
 } from 'lucide-vue-next'
+import API_BASE_URL from '@/api.js'
 
 export default {
   name: 'AdminProducts',
@@ -200,7 +201,7 @@ export default {
     
     async fetchProducts() {
       try {
-        const response = await fetch('/api/products')
+        const response = await fetch(`${API_BASE_URL}/api/products`)
         const result = await response.json()
         
         if (response.ok) {
@@ -238,8 +239,8 @@ export default {
     async saveProduct() {
       try {
         const url = this.editingProduct 
-          ? `/api/products/${this.editingProduct.id}` 
-          : '/api/products'
+          ? `${API_BASE_URL}/api/products/${this.editingProduct.id}` 
+          : `${API_BASE_URL}/api/products`
           
         const method = this.editingProduct ? 'PUT' : 'POST'
         
@@ -280,7 +281,7 @@ export default {
       if (!this.productToDelete) return
       
       try {
-        const response = await fetch(`/api/products/${this.productToDelete.id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/products/${this.productToDelete.id}`, {
           method: 'DELETE'
         })
         
