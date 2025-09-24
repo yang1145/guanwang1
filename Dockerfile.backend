@@ -41,11 +41,6 @@ USER nodejs
 # 将本地backend目录复制到容器中的/backend目录
 COPY --chown=nodejs:nodejs backend ./backend
 
-# 复制环境配置文件
-# 将.docker环境文件复制为标准.env文件
-# 这样应用程序可以正常读取环境配置
-COPY --chown=nodejs:nodejs .env.docker .env
-
 # 复制其他必要文件
 # 包括示例环境文件，供开发人员参考
 COPY --chown=nodejs:nodejs .env.example .env.example
