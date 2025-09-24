@@ -31,6 +31,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app/backend
+      - ./.env.docker:/app/.env.docker
       - /app/node_modules
     networks:
       - app-network
