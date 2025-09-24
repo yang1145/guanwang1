@@ -48,10 +48,6 @@ USER nodejs
 # 将本地backend目录复制到容器中的/backend目录
 COPY --chown=nodejs:nodejs backend ./backend
 
-# 复制其他必要文件
-# 包括示例环境文件，供开发人员参考
-COPY --chown=nodejs:nodejs .env.example .env.example
-
 # 暴露端口
 # 声明容器在运行时监听的端口
 # 这是一个文档性声明，实际还需要在运行容器时通过-p参数映射端口
