@@ -11,7 +11,8 @@
     "dev:server": "nodemon backend/app.js",
     "init:db": "node backend/config/initDb.js",
     "drop:db": "node backend/config/dropDb.js",
-    "docker:init": "npm run init:db"
+    "docker:init": "npm run init:db",
+    "docker:backend": "docker-compose up --build -d"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

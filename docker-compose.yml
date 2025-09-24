@@ -4,7 +4,7 @@ services:
   app:
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.backend
     ports:
       - "3001:3001"
     environment:
@@ -14,12 +14,12 @@ services:
       - DB_NAME=tech_company
       - DB_PORT=3306
       - PORT=3001
+      - IS_DOCKER=true
     depends_on:
       mysql:
         condition: service_healthy
     volumes:
-      - .:/app
-      - /app/node_modules
+      - ./backend:/app/backend
     networks:
       - app-network
 
