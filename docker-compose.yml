@@ -20,6 +20,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app/backend
+      - /app/node_modules
     networks:
       - app-network
 

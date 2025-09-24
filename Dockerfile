@@ -7,20 +7,20 @@ WORKDIR /app
 # 复制package.json和package-lock.json
 COPY package*.json ./
 
-# 安装所有依赖（包括开发依赖）以支持构建过程
-RUN npm ci
+# 安装生产依赖
+RUN npm install --only=production --no-optional
 
-# 复制所有源代码
-COPY . .
+# 复制后端源代码
+COPY backend ./backend
 
-# 构建前端
-RUN npm run build
+# 复制环境配置文件
+COPY .env.docker .env
 
-# 移除开发依赖，只保留生产依赖
-RUN npm prune --production
+# 复制其他必要文件
+COPY .env.example .env.example
 
 # 暴露端口
 EXPOSE 3001
 
 # 启动应用
-CMD ["npm", "start"]
+CMD ["node", "backend/app.js"]
