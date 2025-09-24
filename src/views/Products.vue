@@ -52,6 +52,7 @@
 
 <script>
 import bg2 from '../assets/images/bg2.jpg'
+import { getApiUrl } from '../api.js'
 
 export default {
   name: 'Products',
@@ -80,7 +81,7 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const response = await fetch('/api/products')
+        const response = await fetch(getApiUrl('/api/products'))
         const result = await response.json()
         if (response.ok) {
           this.products = result.data

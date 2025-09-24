@@ -108,9 +108,9 @@
 </template>
 
 <script>
-import bg2 from '../assets/images/bg2.jpg'
-// 导入lucide-vue-next图标
 import { MapPinIcon, PhoneIcon, MailIcon } from 'lucide-vue-next'
+import bg3 from '../assets/images/bg3.jpg'
+import { getApiUrl } from '../api.js'
 
 export default {
   name: 'Contact',
@@ -121,7 +121,7 @@ export default {
   },
   data() {
     return {
-      headerImage: bg2,
+      headerImage: bg3,
       form: {
         name: '',
         email: '',
@@ -161,20 +161,20 @@ export default {
       });
     },
     validateForm() {
-      this.errors = {};
+      this.errors = {}
       
-      if (!this.form.name) {
-        this.errors.name = '请输入您的姓名';
+      if (!this.form.name.trim()) {
+        this.errors.name = '请输入姓名'
       }
       
-      if (!this.form.email) {
-        this.errors.email = '请输入您的邮箱';
+      if (!this.form.email.trim()) {
+        this.errors.email = '请输入邮箱'
       } else if (!/\S+@\S+\.\S+/.test(this.form.email)) {
-        this.errors.email = '请输入有效的邮箱地址';
+        this.errors.email = '邮箱格式不正确'
       }
       
-      if (!this.form.message) {
-        this.errors.message = '请输入消息内容';
+      if (!this.form.message.trim()) {
+        this.errors.message = '请输入消息内容'
       }
       
       // 电话号码验证（可选字段）
@@ -190,7 +190,7 @@ export default {
         this.submitStatus = null;
         
         try {
-          const response = await fetch('/api/contact', {
+          const response = await fetch(getApiUrl('/api/contact'), {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

@@ -49,6 +49,7 @@
 
 <script>
 import bg2 from '../assets/images/bg2.jpg'
+import { getApiUrl } from '../api.js'
 
 export default {
   name: 'NewsDetail',
@@ -71,7 +72,7 @@ export default {
       this.error = null
       
       try {
-        const response = await fetch(`/api/news/${newsId}`)
+        const response = await fetch(getApiUrl(`/api/news/${newsId}`))
         const result = await response.json()
         
         if (response.ok) {

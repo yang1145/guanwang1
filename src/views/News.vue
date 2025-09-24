@@ -165,18 +165,9 @@
 </template>
 
 <script>
-import bg2 from '../assets/images/bg2.jpg'
-import { 
-  CalendarIcon, 
-  TagIcon, 
-  ArrowRightIcon, 
-  ChevronLeftIcon, 
-  ChevronRightIcon, 
-  HashIcon, 
-  TrendingUpIcon, 
-  EyeIcon,
-  InfoIcon
-} from 'lucide-vue-next'
+import { CalendarIcon, TagIcon, ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-vue-next'
+import bg3 from '../assets/images/bg3.jpg'
+import { getApiUrl } from '../api.js'
 
 export default {
   name: 'News',
@@ -185,19 +176,15 @@ export default {
     TagIcon,
     ArrowRightIcon,
     ChevronLeftIcon,
-    ChevronRightIcon,
-    HashIcon,
-    TrendingUpIcon,
-    EyeIcon,
-    InfoIcon
+    ChevronRightIcon
   },
   data() {
     return {
-      headerImage: bg2,
-      currentPage: 1,
-      articlesPerPage: 3, // 将单页新闻数量设置为3个
-      maxVisiblePages: 3,
+      headerImage: bg3,
       allArticles: [],
+      currentPage: 1,
+      articlesPerPage: 6,
+      maxVisiblePages: 5,
       tags: [],
       popularArticles: []
     }
@@ -263,7 +250,7 @@ export default {
   methods: {
     async fetchArticles() {
       try {
-        const response = await fetch('/api/news')
+        const response = await fetch(getApiUrl('/api/news'))
         const result = await response.json()
         if (response.ok) {
           // 正确处理API响应数据结构
@@ -286,7 +273,7 @@ export default {
     
     async fetchPopularArticles() {
       try {
-        const response = await fetch('/api/news/popular')
+        const response = await fetch(getApiUrl('/api/news/popular'))
         const result = await response.json()
         if (response.ok) {
           this.popularArticles = result.data || []
