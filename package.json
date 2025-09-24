@@ -1,34 +1,20 @@
 {
-  "name": "guanwang1",
+  "name": "guanwang1-frontend",
   "version": "1.0.0",
-  "description": "",
+  "description": "科技企业官网前端项目",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "start": "node backend/app.js",
-    "dev:server": "nodemon backend/app.js",
-    "init:db": "node backend/config/initDb.js",
-    "drop:db": "node backend/config/dropDb.js",
-    "docker:init": "npm run init:db",
-    "docker:backend": "docker-compose up --build -d app mysql",
-    "docker:frontend": "docker build -f Dockerfile.frontend -t guanwang1-frontend .",
-    "docker:build": "docker-compose build"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
     "lucide-vue-next": "^0.544.0",
-    "mysql2": "^3.2.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.0",
-    "nodemon": "^2.0.22",
     "vite": "^3.0.0"
   }
 }

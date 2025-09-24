@@ -12,7 +12,7 @@ export default defineConfig({
     // 添加代理配置，将API请求代理到后端服务器
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: process.env.VITE_API_URL || 'http://localhost:3001',
         changeOrigin: true,
         secure: false
       }
