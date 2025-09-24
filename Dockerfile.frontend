@@ -1,0 +1,42 @@
+# 使用Node.js 22.19.0作为基础镜像
+# 选择特定版本以确保构建的一致性和可重现性
+FROM node:22.19.0
+
+# 设置工作目录
+# 所有后续命令将在/app目录下执行
+WORKDIR /app
+
+# 复制package.json和package-lock.json
+# 先复制依赖文件，以便利用Docker缓存机制
+# 只有当package.json或package-lock.json发生变化时才重新安装依赖
+COPY package*.json ./
+
+# 安装所有依赖（包括开发依赖）以支持前端构建
+RUN npm install
+
+# 复制所有源代码
+COPY . .
+
+# 构建前端应用
+RUN npm run build
+
+# 创建非root用户用于运行应用（安全最佳实践）
+# 避免以root用户运行容器，提高安全性
+# 使用固定UID/GID (1001) 便于管理和权限控制
+RUN groupadd --gid 1001 --non-unique nodejs && \
+    useradd --uid 1001 --gid nodejs --shell /bin/bash --create-home nodejs
+
+# 将工作目录所有权转移给nodejs用户
+# 在切换用户之前设置好权限
+RUN chown -R nodejs:nodejs /app
+
+# 切换到非root用户
+# 后续所有操作都将以nodejs用户身份执行
+USER nodejs
+
+# 暴露端口
+# 声明容器在运行时监听的端口
+EXPOSE 80
+
+# 启动应用
+CMD ["npx", "vite", "preview", "--host", "0.0.0.0"]

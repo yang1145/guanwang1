@@ -100,8 +100,23 @@
    ```
 
 3. 访问应用：
-   - 应用将在 `http://localhost:3001` 可用
-   - 管理后台登录页面：`http://localhost:3001/admin/login`
+   - 前端页面将在 `http://localhost` 可用
+   - 后端API将在 `http://localhost:3001` 可用
+   - 管理后台登录页面：`http://localhost/admin/login`
+
+### 单独部署前端或后端
+
+您也可以单独部署前端或后端服务：
+
+1. 构建并启动后端服务：
+   ```bash
+   docker-compose up --build app mysql
+   ```
+
+2. 构建并启动前端服务：
+   ```bash
+   docker-compose up --build frontend
+   ```
 
 ### 停止服务
 

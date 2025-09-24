@@ -12,7 +12,8 @@
     "init:db": "node backend/config/initDb.js",
     "drop:db": "node backend/config/dropDb.js",
     "docker:init": "npm run init:db",
-    "docker:backend": "docker-compose up --build -d",
+    "docker:backend": "docker-compose up --build -d app mysql",
+    "docker:frontend": "docker build -f Dockerfile.frontend -t guanwang1-frontend .",
     "docker:build": "docker-compose build"
   },
   "dependencies": {

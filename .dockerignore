@@ -4,8 +4,9 @@ dist
 .env.local
 .git
 .gitignore
-README.md
-Dockerfile
+.gitattributes
+Dockerfile.backend
+Dockerfile.frontend
 .dockerignore
 docker-compose.yml
 vite.config.js
@@ -14,3 +15,4 @@ src
 *.md
 !package-lock.json
 !.env.docker
+!.env.example
