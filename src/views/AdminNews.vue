@@ -316,8 +316,7 @@ export default {
           alert(result.error || '删除失败')
         }
       } catch (error) {
-        console.error('删除新闻时出错:', error)
-        alert('网络错误，请稍后重试')
+
       }
     },
     

@@ -195,7 +195,11 @@ export default {
   },
   methods: {
     checkAuth() {
-      // 认证检查已简化，始终返回 true
+      const token = localStorage.getItem('adminToken')
+      if (!token) {
+        this.$router.push('/admin/login')
+        return false
+      }
       return true
     },
     

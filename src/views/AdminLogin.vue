@@ -71,7 +71,8 @@ export default {
         const result = await response.json()
         
         if (response.ok) {
-          // 登录成功，跳转到管理主页
+          // 登录成功，保存token并跳转到管理主页
+          localStorage.setItem('adminToken', result.token)
           this.$router.push('/admin/dashboard')
         } else {
           this.error = result.error || '登录失败'

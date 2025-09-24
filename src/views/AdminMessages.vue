@@ -175,7 +175,10 @@ export default {
       
       try {
         const response = await fetch(`${API_BASE_URL}/api/contact/${id}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          }
         })
         
         const result = await response.json()

@@ -194,10 +194,22 @@ export default {
     }
   },
   async mounted() {
-    // 获取统计数据
-    await this.fetchStats()
+    if (!this.checkAuth()) {
+      return
+    }
+    
+    await this.fetchStats();
   },
   methods: {
+    checkAuth() {
+      const token = localStorage.getItem('adminToken')
+      if (!token) {
+        this.$router.push('/admin/login')
+        return false
+      }
+      return true
+    },
+    
     async fetchStats() {
       try {
         // 获取产品数量
@@ -226,6 +238,7 @@ export default {
     },
     
     handleLogout() {
+      localStorage.removeItem('adminToken');
       this.$router.push('/admin/login')
     },
     
@@ -253,7 +266,8 @@ export default {
         const response = await fetch(`${API_BASE_URL}/api/admin/change-password`, {
           method: 'PUT',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
           },
           body: JSON.stringify(this.passwordForm)
         });
