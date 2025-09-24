@@ -8,7 +8,14 @@ WORKDIR /app
 
 # 设置环境变量
 # 明确指定为生产环境，优化性能和安全性
-ENV NODE_ENV=production
+ENV NODE_ENV=production \
+    DB_HOST=mysql \
+    DB_USER=root \
+    DB_PASSWORD=rootpassword \
+    DB_NAME=tech_company \
+    DB_PORT=3306 \
+    PORT=3001 \
+    IS_DOCKER=true
 
 # 复制package.json和package-lock.json
 # 先复制依赖文件，以便利用Docker缓存机制
