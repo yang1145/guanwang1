@@ -42,7 +42,7 @@
         </div>
         
         <!-- 当没有产品时显示 -->
-        <div v-if="filteredProducts.length === 0" class="no-products" data-aos="fade-up">
+        <div v-if="filteredProducts && filteredProducts.length === 0" class="no-products" data-aos="fade-up">
           <p>暂无相关产品</p>
         </div>
       </div>
@@ -71,46 +71,52 @@ export default {
       if (this.activeCategory === 'all') {
         return this.products
       }
-      return this.products.filter(product => product.category === this.activeCategory)
+      // 确保产品和分类数据都存在再进行筛选
+      if (this.products && this.products.length > 0) {
+        return this.products.filter(product => product.category === this.activeCategory)
+      }
+      return []
     }
   },
   async mounted() {
+    await this.fetchCategories()
     await this.fetchProducts()
     this.animateOnScroll();
   },
   methods: {
+    async fetchCategories() {
+      try {
+        const response = await fetch(getApiUrl('/api/categories'))
+        const result = await response.json()
+        if (response.ok) {
+          // 添加"全部产品"分类
+          this.categories = [{ id: 'all', name: '全部产品' }]
+          
+          // 添加从API获取的分类
+          if (result.data && Array.isArray(result.data)) {
+            result.data.forEach(category => {
+              this.categories.push({
+                id: category.name,
+                name: category.name
+              })
+            })
+          }
+        } else {
+          console.error('获取分类失败:', result.error)
+          this.useDefaultCategories()
+        }
+      } catch (error) {
+        console.error('获取分类时出错:', error)
+        this.useDefaultCategories()
+      }
+    },
+    
     async fetchProducts() {
       try {
         const response = await fetch(getApiUrl('/api/products'))
         const result = await response.json()
         if (response.ok) {
-          this.products = result.data
-          
-          // 根据获取的产品数据动态生成分类
-          const uniqueCategories = [...new Set(result.data.map(product => product.category))]
-          this.categories = [{ id: 'all', name: '全部产品' }]
-          
-          // 为每个分类添加中文名称映射
-          uniqueCategories.forEach(category => {
-            let categoryName = category
-            switch(category) {
-              case 'ai':
-                categoryName = '人工智能'
-                break
-              case 'cloud':
-                categoryName = '云计算'
-                break
-              case 'iot':
-                categoryName = '物联网'
-                break
-              case 'security':
-                categoryName = '安全'
-                break
-              default:
-                categoryName = category
-            }
-            this.categories.push({ id: category, name: categoryName })
-          })
+          this.products = result.data || []
         } else {
           console.error('获取产品失败:', result.error)
           this.useMockData()
@@ -119,6 +125,16 @@ export default {
         console.error('获取产品时出错:', error)
         this.useMockData()
       }
+    },
+    
+    useDefaultCategories() {
+      this.categories = [
+        { id: 'all', name: '全部产品' },
+        { id: 'ai', name: '人工智能' },
+        { id: 'cloud', name: '云计算' },
+        { id: 'iot', name: '物联网' },
+        { id: 'security', name: '安全' }
+      ]
     },
     
     useMockData() {
@@ -173,40 +189,62 @@ export default {
         }
       ]
       
-      this.categories = [
-        { id: 'all', name: '全部产品' },
-        { id: 'ai', name: '人工智能' },
-        { id: 'cloud', name: '云计算' },
-        { id: 'iot', name: '物联网' },
-        { id: 'security', name: '安全' }
-      ]
+      this.useDefaultCategories()
     },
     
     setActiveCategory(categoryId) {
       this.activeCategory = categoryId
+      // 重新初始化动画效果
+      this.reinitializeAnimations()
+      // 滚动到产品列表顶部，提升用户体验
+      this.scrollToProducts()
     },
+    
+    reinitializeAnimations() {
+      this.$nextTick(() => {
+        // 移除已有的动画类，然后重新添加，确保动画效果在每次筛选时都能正常显示
+        const productCards = document.querySelectorAll('.product-card')
+        productCards.forEach(card => {
+          card.classList.remove('aos-animate')
+        })
+        
+        // 重新触发动画
+        this.animateOnScroll()
+      })
+    },
+    
+    scrollToProducts() {
+      this.$nextTick(() => {
+        const productsSection = document.querySelector('.product-categories')
+        if (productsSection) {
+          productsSection.scrollIntoView({ behavior: 'smooth' })
+        }
+      })
+    },
+    
     animateOnScroll() {
-      const elements = document.querySelectorAll('[data-aos]');
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const element = entry.target;
-            const animation = element.dataset.aos;
-            const delay = element.dataset.aosDelay || 0;
-            
-            setTimeout(() => {
-              element.classList.add('aos-animate');
-            }, delay);
-          }
-        });
-      }, {
-        threshold: 0.1
-      });
-      
-      elements.forEach(element => {
-        observer.observe(element);
-      });
+      this.$nextTick(() => {
+        const elements = document.querySelectorAll('[data-aos]:not(.aos-animate)')
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const element = entry.target
+              const delay = element.dataset.aosDelay || 0
+              
+              setTimeout(() => {
+                element.classList.add('aos-animate')
+              }, delay)
+            }
+          })
+        }, {
+          threshold: 0.1
+        })
+        
+        elements.forEach(element => {
+          observer.observe(element)
+        })
+      })
     }
   }
 }

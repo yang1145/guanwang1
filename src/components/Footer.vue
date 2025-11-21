@@ -3,7 +3,7 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-section company-info" data-aos="fade-up">
-          <h3>科技企业</h3>
+          <h3>{{ siteConfig.company_name }}</h3>
           <p>致力于科技创新与发展，为客户提供最优质的产品和服务。</p>
           <div class="social-links">
             <a href="#" class="social-link" aria-label="Facebook"><FacebookIcon :size="18" /></a>
@@ -39,11 +39,12 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2023 科技企业. 保留所有权利.</p>
+        <p v-if="siteConfig.copyright_info">{{ siteConfig.copyright_info }}</p>
+        <p v-else>&copy; 2023 {{ siteConfig.company_name }}. 保留所有权利.</p>
         <div class="footer-beian">
-          <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">京ICP备xxxxxxxx号-x</a>
-          <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=xxxxxxxxxx" target="_blank" rel="noopener">
-            京公网安备 xxxxxxxxxxxxx号
+          <a v-if="siteConfig.icp_number" href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">{{ siteConfig.icp_number }}</a>
+          <a v-if="siteConfig.police_number" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=xxxxxxxxxx" target="_blank" rel="noopener">
+            {{ siteConfig.police_number }}
           </a>
         </div>
         <div class="back-to-top" @click="scrollToTop">
@@ -79,6 +80,17 @@ export default {
     MailIcon,
     MapPinIcon,
     ArrowUpIcon
+  },
+  props: {
+    siteConfig: {
+      type: Object,
+      default: () => ({
+        company_name: '科技企业',
+        icp_number: '',
+        police_number: '',
+        copyright_info: '版权所有 © 2023 科技企业. 保留所有权利.'
+      })
+    }
   },
   methods: {
     scrollToTop() {

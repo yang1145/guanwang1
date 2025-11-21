@@ -2,7 +2,7 @@
   <header class="header">
     <div class="container">
       <div class="logo">
-        <h1>科技企业</h1>
+        <h1>{{ companyName }}</h1>
       </div>
       <nav class="nav">
         <ul class="nav-list">
@@ -35,6 +35,12 @@
 <script>
 export default {
   name: 'Header',
+  props: {
+    companyName: {
+      type: String,
+      default: '科技企业'
+    }
+  },
   methods: {
     toggleMenu() {
       const navList = document.querySelector('.nav-list')

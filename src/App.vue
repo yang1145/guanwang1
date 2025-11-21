@@ -1,22 +1,60 @@
 <template>
   <div id="app">
-    <Header />
+    <Header :company-name="siteConfig.company_name" />
     <transition :name="$route.meta.transition || 'fade'" mode="out-in">
       <router-view :key="$route.fullPath" />
     </transition>
-    <Footer />
+    <Footer :site-config="siteConfig" />
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import { getApiUrl } from './api.js'
 
 export default {
   name: 'App',
   components: {
     Header,
     Footer
+  },
+  data() {
+    return {
+      siteConfig: {
+        company_name: '科技企业', // 默认值
+        site_title: '科技企业官网', // 默认标题
+        icp_number: '',
+        police_number: '',
+        copyright_info: '版权所有 © 2023 科技企业. 保留所有权利.'
+      }
+    }
+  },
+  async mounted() {
+    await this.fetchSiteConfig()
+  },
+  methods: {
+    async fetchSiteConfig() {
+      try {
+        const response = await fetch(getApiUrl('/api/site-config'))
+        const result = await response.json()
+        
+        if (response.ok && result.data) {
+          this.siteConfig = {
+            company_name: result.data.company_name || this.siteConfig.company_name,
+            site_title: result.data.site_title || this.siteConfig.site_title,
+            icp_number: result.data.icp_number || this.siteConfig.icp_number,
+            police_number: result.data.police_number || this.siteConfig.police_number,
+            copyright_info: result.data.copyright_info || this.siteConfig.copyright_info
+          }
+          
+          // 设置页面标题
+          document.title = this.siteConfig.site_title
+        }
+      } catch (error) {
+        console.error('获取网站配置失败:', error)
+      }
+    }
   }
 }
 </script>

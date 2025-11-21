@@ -12,7 +12,7 @@
         <div class="info-content">
           <div class="info-text" data-aos="fade-right">
             <h2>公司简介</h2>
-            <p>科技企业成立于2010年，是一家专注于前沿技术研发和创新解决方案提供的科技公司。我们致力于通过技术创新推动行业发展，为客户提供卓越的产品和服务。</p>
+            <p>{{ companyDescription }}</p>
             <p>经过多年的发展，我们已经成为行业内的领先企业，拥有强大的研发团队和完善的售后服务体系。</p>
           </div>
           <div class="info-image" data-aos="fade-left">
@@ -126,6 +126,7 @@
 import bg2 from '../assets/images/bg2.jpg'
 // 导入lucide-vue-next图标
 import { TargetIcon, RocketIcon } from 'lucide-vue-next'
+import { getApiUrl } from '../api.js'
 
 export default {
   name: 'About',
@@ -135,13 +136,30 @@ export default {
   },
   data() {
     return {
-      headerImage: bg2
+      headerImage: bg2,
+      companyDescription: '' // 移除了默认的硬编码描述
     }
   },
-  mounted() {
+  async mounted() {
+    await this.fetchSiteConfig()
     this.animateOnScroll();
   },
   methods: {
+    async fetchSiteConfig() {
+      try {
+        const response = await fetch(getApiUrl('/api/site-config'))
+        const result = await response.json()
+        
+        if (response.ok && result.data) {
+          this.companyDescription = result.data.company_description || ''
+        }
+      } catch (error) {
+        console.error('获取网站配置失败:', error)
+        // 如果获取失败，可以设置一个默认值或者留空
+        this.companyDescription = '暂无公司简介信息'
+      }
+    },
+    
     animateOnScroll() {
       const elements = document.querySelectorAll('[data-aos]');
       const observer = new IntersectionObserver((entries) => {
