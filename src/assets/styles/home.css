@@ -1,0 +1,616 @@
+.home {
+  flex: 1;
+}
+
+.section {
+  padding: 80px 0;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.section-title:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background-color: #42b983;
+}
+
+.dark-mode .section-title {
+  color: #e0e0e0;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.dark-mode .section-subtitle {
+  color: #aaa;
+}
+
+.hero {
+  position: relative;
+  color: white;
+  height: 500px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+/* 轮播图样式 */
+.carousel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.carousel-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.carousel-item.active {
+  opacity: 1;
+}
+
+.carousel-bg {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  padding: 0 20px;
+  z-index: 10;
+}
+
+.carousel-btn {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.carousel-indicators span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-indicators span.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+/* 轮播图标题样式 */
+.carousel-caption {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+  color: white;
+  width: 80%;
+  max-width: 800px;
+  padding: 20px;
+}
+
+.carousel-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-description {
+  font-size: 1rem;
+  margin-bottom: 30px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.4s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: #42b983;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #359c6d;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.features {
+  background-color: #f8f9fa;
+}
+
+.dark-mode .features {
+  background-color: #252525;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s ease;
+  border: 1px solid #eee;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .feature-card {
+  background: #2d2d2d;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid #3d3d3d;
+}
+
+.dark-mode .feature-card:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.dark-mode .feature-card h3 {
+  color: #e0e0e0;
+}
+
+.feature-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.dark-mode .feature-card p {
+  color: #aaa;
+}
+
+.news-preview {
+  background-color: #f8f9fa;
+}
+
+.dark-mode .news-preview {
+  background-color: #252525;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.news-card {
+  background: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  box-shadow: none;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-color: #42b983;
+}
+
+.dark-mode .news-card {
+  background: #2d2d2d;
+  border: 1px solid #3d3d3d;
+}
+
+.dark-mode .news-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: #64b5f6;
+}
+
+.news-date {
+  color: #42b983;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  display: block;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.news-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  color: #2c3e50;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.dark-mode .news-card h3 {
+  color: #e0e0e0;
+}
+
+.news-excerpt {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.dark-mode .news-excerpt {
+  color: #bbb;
+}
+
+.read-more {
+  color: #42b983;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-block;
+  padding: 8px 0;
+  border-bottom: 1px solid transparent;
+}
+
+.read-more:hover {
+  color: #359c6d;
+  border-bottom-color: #359c6d;
+}
+
+.dark-mode .read-more {
+  color: #64b5f6;
+}
+
+.dark-mode .read-more:hover {
+  color: #90caf9;
+  border-bottom-color: #90caf9;
+}
+
+.more-news {
+  color: #42b983;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 1.1rem;
+}
+
+.more-news:hover {
+  color: #359c6d;
+}
+
+.dark-mode .more-news {
+  color: #64b5f6;
+}
+
+.dark-mode .more-news:hover {
+  color: #90caf9;
+}
+
+.testimonials {
+  background-color: #fff;
+}
+
+.dark-mode .testimonials {
+  background-color: #1a1a1a;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.testimonial-card {
+  background: #ffffff;
+  padding: 24px;
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+  position: relative;
+  border-radius: 8px;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e0;
+}
+
+.dark-mode .testimonial-card {
+  background: #2d2d2d;
+  border: 1px solid #3d3d3d;
+}
+
+.dark-mode .testimonial-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  border-color: #4a4a4a;
+}
+
+.testimonial-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.client-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #42b983, #64b5f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.avatar-placeholder {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+}
+
+.client-details {
+  flex: 1;
+}
+
+.client-name {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+  font-size: 1rem;
+}
+
+.dark-mode .client-name {
+  color: #e0e0e0;
+}
+
+.client-title {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.dark-mode .client-title {
+  color: #94a3b8;
+}
+
+.testimonial-text {
+  color: #334155;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-style: normal;
+  padding-top: 0;
+  position: relative;
+}
+
+.testimonial-text::before {
+  content: '"';
+  position: absolute;
+  top: -20px;
+  left: -10px;
+  font-size: 4rem;
+  color: rgba(66, 185, 131, 0.15);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.dark-mode .testimonial-text {
+  color: #cbd5e1;
+}
+
+.quote-icon {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  color: rgba(66, 185, 131, 0.3);
+  font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 0;
+  }
+  
+  .section-title {
+    font-size: 1.7rem;
+  }
+  
+  .carousel-title {
+    font-size: 1.8rem;
+  }
+  
+  .carousel-subtitle {
+    font-size: 1rem;
+  }
+  
+  .carousel-caption {
+    top: 50%;
+    width: 90%;
+    padding: 15px;
+    transform: translate(-50%, -50%);
+  }
+  
+  .carousel-title {
+    margin-bottom: 10px;
+  }
+  
+  .carousel-subtitle {
+    margin-bottom: 8px;
+  }
+  
+  .carousel-description {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  
+  .hero {
+    height: 50vh;
+    min-height: 300px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .carousel-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .news-grid,
+  .testimonials-grid,
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .testimonial-card {
+    text-align: center;
+  }
+  
+  .client-info {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .client-avatar {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .quote-icon {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .carousel-indicators {
+    bottom: 15px;
+  }
+}
+
+/* 添加动画相关样式 */
+[data-aos] {
+  transition: all 0.6s ease;
+}
